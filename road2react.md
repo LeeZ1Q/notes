@@ -79,7 +79,7 @@ function App() {
 
   `{list.map(item => <h1 key = {item.objectID}>{item.title}</h1>)}`
 
-可以看到开发者工具里面 <h1>并没有key这个属性，so why？
+可以看到开发者工具里面 `<h1>`并没有key这个属性，so why？
 
 每当React重新渲染list，用来检查这个item是否改变
 

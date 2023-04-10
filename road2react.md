@@ -709,3 +709,308 @@ function handleClick() {
 - 在严格模式下，React会对组件进行两次挂载（仅在开发中！），以对你的Effect进行压力测试。
 - 如果你的Effect因为重新挂载而损坏，你需要实现一个清理函数。
 - React会在Effect下次运行前和卸载时调用你的清理函数
+
+## fragments
+
+目前写的组件里面都被打包在根元素（容器元素）`<div>`，否则标签和输入元素就无法在没有包装的顶层元素的情况下并排返回
+
+为解决这情况  → `fragments`
+
+```jsx
+const Search = ({ search, onSearch }) => (
+  <div>  //容器元素
+    <label htmlFor="search">Search: </label>
+    <input
+      id="search"
+      type="text"
+      value={search}
+      onChange={onSearch}
+    />
+  </div> //容器元素
+);
+```
+
+```jsx
+const Search = ({ search, onSearch }) => (
+  <React.Fragment> //<>
+    <label htmlFor="search">Search: </label>
+    <input
+      id="search"
+      type="text"
+      value={search}
+      onChange={onSearch}
+    />
+  </React.Fragment> //</>
+);
+```
+
+ **<React.Fragment> （<>）不会实际渲染**  更简洁的写法 `<> </>`
+
+## reusable-components
+
+可复用的组件  
+
+之前`search`组件写的太死了
+
+怎么能不写死呢？给`search`组件传动态的`id`、`label`
+
+```jsx
+const InputWithLabel = ({ 
+  id, 
+  label , 
+  value, 
+  type = 'text', //默认
+  onInputChange,
+}) => (
+    <>
+      <label htmlFor={id}>{label}: </label>
+      <input 
+        id={id}
+        type={type} 
+        value={value}
+        onChange = {onInputChange} 
+      />
+    </>
+  );
+```
+
+想复用，给外部提供接口，少写死
+
+## Component Composition
+
+组件组合 将 JSX 作为子组件传递 **嵌套组件**
+
+一个React App 就像一棵组件树
+
+在组件元素之间传递的所有东西都可以作为组件中的 `**children**` 被访问，并在某处被渲染
+
+```jsx
+<InputWithLabel
+    id="search"
+    value={searchTerm}
+    onInputChange={handleSearch}
+#########
+>
+#########
+	<strong>Search:</strong>
+#########
+</InputWithLabel>
+```
+
+```jsx
+const InputWithLabel = ({
+  id,
+  value,
+  type = 'text',
+  onInputChange,
+#########
+  children,
+#########
+}) => (
+  <>
+#########
+    <label htmlFor={id}>{children}</label>
+#########
+    &nbsp;
+    <input
+      id={id}
+      type={type}
+      value={value}
+      onChange={onInputChange}
+    />
+  </>
+);
+```
+
+将内容嵌套在 JSX 标签中时，父组件将在名为 `children` 的 prop 中接收到该内容
+
+## Imperative
+
+（React本质是声明式的）
+
+side-effect：react管辖之外的，这时候需要命令式去访问元素
+
+怎么写命令式？一个`useEffect`、一个`ref`
+
+1. 用**React的useRef Hook**创建一个`ref`。这个`ref`对象是一个持久的值，在React组件的生命周期内保持不变。它有一个叫做`current`的属性，与`ref`对象相反，它可以被**改变**
+2. `ref`被传递到元素的JSX保留的`ref`属性，因此元素实例被分配到可改变的`current`属性
+3. 用React的`useEffect` Hook选择进入React的生命周期，在组件渲染（或其依赖关系改变）时执行
+4. 由于`ref`被传递到元素的`ref`属性，它的`current`属性可以访问该元素。
+
+## Ref
+
+引用值，不触发渲染
+
+**能保存、更新数据，不引起组件的重新渲染** 
+
+```jsx
+import { useRef } from 'react';
+```
+
+调用 `useRef` Hook 并传入你想要引用的初始值作为唯一参数。例如，这里的 ref 引用的值是“0”：
+
+```jsx
+const ref = useRef(0);
+```
+
+`useRef` 返回一个这样的对象:
+
+```jsx
+{ 
+
+  current: 0 // 你向 useRef 传入的值
+
+}
+```
+
+用 `ref.current` 属性访问该 ref 的当前值。这个值是有意被设置为可变的，意味着既可以读取它也可以写入它。
+
+**组件不会在每次递增时重新渲染。** 与 state 一样，React 会在每次重新渲染之间保留 ref。但是，设置 state 会重新渲染组件，更改 ref 不会！
+
+### ref 和 state 的不同之处 
+
+ref 似乎没有 state 那样“严格” —— 例如，可以改变它们而非总是必须使用 state 设置函数。但在大多数情况下，用 state吧！ref 是一个“应急方案”，并不会经常用到它。 以下是 state 和 ref 的对比：
+
+| ref                                                     | state                                                        |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| `useRef(initialValue)`返回 `{ current: initialValue }`  | `useState(initialValue)` 返回 state 变量的当前值和一个 state 设置函数 ( `[value, setValue]`) |
+| 更改时不会触发重新渲染                                  | 更改时触发重新渲染。                                         |
+| 可变 —— 你可以在渲染过程之外修改和更新 `current` 的值。 | “不可变” —— 你必须使用 state 设置函数来修改 state 变量，从而排队重新渲染。 |
+| 你不应在渲染期间读取（或写入） `current` 值。           | 你可以随时读取 state。但是，每次渲染都有自己不变的 state [快照](https://zh-hans.reactjs.org/learn/state-as-a-snapshot)。 |
+
+### 何时使用 ref 
+
+通常，当你的组件需要“跳出” React 并**与外部 API 通信**时，你会用到 ref —— 通常是不会影响组件外观的浏览器 API。以下是这些罕见情况中的几个：
+
+- 存储 [timeout ID](https://developer.mozilla.org/docs/Web/API/setTimeout)
+- 存储和操作 [DOM 元素](https://developer.mozilla.org/docs/Web/API/Element)
+- 存储不需要被用来计算 JSX 的其他对象。
+
+如果你的组件需要存储一些值，但不影响渲染逻辑，请选择 ref。
+
+### ref 的最佳实践 
+
+- **将 ref 视为应急方案。** 使用外部系统或浏览器 API 时，ref 很有用。如果很大一部分应用程序逻辑和数据流都依赖于 ref，可能需要重新考虑你的方法。**能不用就不用**
+- **不要在渲染过程中读取或写入 `ref.current`。** 如果渲染过程中需要某些信息，使用 [state](https://zh-hans.reactjs.org/learn/state-a-components-memory) 代替。由于 React 不知道 `ref.current` 何时发生变化，即使在渲染时读取它也会使组件的行为难以预测。（唯一的例外是像 `if (!ref.current) ref.current = new Thing()` 这样的代码，它只在第一次渲染期间设置一次 ref）
+
+### ref 和 DOM 
+
+你可以将 ref 指向任何值。但是，ref 最常见的用法是访问 DOM 元素。例如，如果你想以编程方式聚焦一个输入框，这种用法就会派上用场。当你将 ref 传递给 JSX 中的 `ref` 属性时，比如 `<div ref={myRef}>`，React 会将相应的 DOM 元素放入 `myRef.current` 中
+
+## Inline Handler 
+
+内联处理程序 允许我们**从列表中删除项目**
+
+```jsx
+const handleDelete = () => {
+    setStories((prev) => prev.filter(item => item.title !== title));
+  };
+```
+
+回调函数使用数组的 `filter` 方法来遍历之前的stories列表 `prev`，并将其中所有标题不等于当前要删除的标题 `title` 的故事筛选出来，最终形成一个新的stories列表。这个新列表会被传递给 `setStories`，从而更新组件状态中存储的故事列表，达到了删除指定故事的目的
+
+就系介玩：
+
+```jsx
+ <button type="button" onClick={() => onRemoveItem(item)}>
+```
+
+## Asynchronous Data
+
+第一个交互：搜索
+
+第二个交互：删除
+
+搞点真实数据！模拟一哈请求API
+
+API请求属于side-effect，用`useEffect`
+
+```jsx
+const [stories, setStories] = React.useState([]); //[]是因为有filter这个数组方法
+
+  React.useEffect(() => {
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(storiesList);
+        }, 2000);
+      }).then((data) => {
+        setStories(data)
+      });
+  },[]); //[]表示只在组件挂载时执行一次
+```
+
+
+
+## Conditional Rendering
+
+条件渲染
+
+eg.loading... 
+
+在React中，如果我们必须根据信息（如state、props）来渲染不同的JSX，就会发生条件渲染
+
+那就三元表达式？
+
+```jsx
+{stories.length?<List list = {searchedStories} setStories = {setStories}/> : <h1>Loading...</h1>}
+```
+
+```jsx
+{isError && <p>Something went wrong ...</p>}
+```
+
+当 `isError` 为真时，表达式的值为 `<p>Something went wrong ...</p>`，React 就会将其渲染到页面中。如果 `isError` 为假，那么整个表达式的值就为假，React 则不会渲染任何东西
+
+## Third-Party Libraries 、 Data Fetching
+
+原生Fetch不是所有浏览器都兼容，不是默认json，所以用`axios`
+
+```jsx
+ React.useEffect(() => {
+    axios.get('https://hn.algolia.com/api/v1/search?query=react')
+    .then((value) => {
+      setStories(value.data.hits);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  },[]); 
+```
+
+### 单引号（'') 、双引号（""和反引号（``）
+
+单引号（'') 和双引号（""）都可以用来创建字符串。而反引号（``）则是在 ECMAScript 6（ES6）中引入的一种新的字符串语法，也被称为“模板字面量”（template literals）。
+
+与单引号和双引号不同，反引号可以包含嵌入式表达式（embedded expressions），也就是使用 `${}` 语法将任意 JavaScript 表达式插入到字符串中。这使得创建动态字符串变得更加方便，避免了使用字符串拼接的繁琐过程。
+
+### refetch
+
+```jsx
+React.useEffect(() => {
+    if(!searchTerm) return;
+    axios
+    .get(`https://hn.algolia.com/api/v1/search?query=${searchTerm}`)
+    .then((value) => {setStories(value.data.hits);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  },[searchTerm]);  
+```
+
+### 显式Data Fetching
+
+不要每次输入都在请求，加个搜索按钮吧！
+
+async
+
+```jsx
+React.useEffect(() => {
+    if(!searchTerm) return;
+   (async () => {
+      let value = await axios.get(url);
+      setStories(value.data.hits);
+    })();
+  }, [url]);
+```
+

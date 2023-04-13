@@ -1014,3 +1014,25 @@ React.useEffect(() => {
   }, [url]);
 ```
 
+## Form
+
+`handleSearchSubmit()`处理程序没有传递给按钮，而是用在**表单**元素的`onSubmit`属性中。
+
+按钮收到一个新的`type`属性，叫做`submit`，点击，触发`onSubmit`事件，运行`handleSearchSubmit`
+
+```jsx
+ <form onSubmit = {handleSearchSubmit}>
+      <InputWithLabel
+        id = "search"
+        value = {searchTerm}
+        onInputChange = {handleSearch}
+      >
+        <strong> Search : </strong>
+      </InputWithLabel>
+      <button type = "submit" disabled = {!searchTerm}>Submit</button>
+    </form>
+```
+
+这样，回车`Enter` 也可以提交啦！
+
+（不想每次都触发HTML原生的表单行为导致浏览器重新加载，加上` event.preventDefault();`）

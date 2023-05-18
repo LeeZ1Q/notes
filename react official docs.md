@@ -22,7 +22,7 @@
 
 
 
-## Thinkin in React
+## Thinkin in React 
 
 step1.将UI拆解为组件层级结构
 
@@ -95,7 +95,7 @@ step5.添加反向数据流
 
 
 
-## Keeping Components Pure
+## 保持组件纯粹！
 
 **纯函数**通常具有如下特征：
 
@@ -112,7 +112,9 @@ step5.添加反向数据流
 
 与渲染函数不同，事件处理函数不需要是 [纯函数](https://zh-hans.reactjs.org/learn/keeping-components-pure)，因此它是用来 *更改* 某些值的绝佳位置。例如，更改输入框的值以响应键入，或者更改列表以响应按钮的触发。但是，为了更改某些信息，你首先需要某种方式存储它。在 React 中，这是通过 [state（组件的记忆）](https://zh-hans.reactjs.org/learn/state-a-components-memory) 来完成的。
 
-## Render and Commit
+## 
+
+## 渲染和提交
 
 - [`e.stopPropagation()`](https://developer.mozilla.org/docs/Web/API/Event/stopPropagation) 阻止触发绑定在外层标签上的事件处理函数。
 - [`e.preventDefault()`](https://developer.mozilla.org/docs/Web/API/Event/preventDefault) 阻止少数事件的默认浏览器行为。
@@ -162,7 +164,7 @@ step5.添加反向数据流
 
 **React 仅在渲染之间存在差异时才会更改 DOM 节点**
 
-## State as a Snapshot
+## State 如同一张快照
 
 [“正在渲染”](https://zh-hans.reactjs.org/learn/render-and-commit#step-2-react-renders-your-components) 就意味着 React 正在调用你的组件——一个函数。你从该函数返回的 JSX 就像是 UI 的一张及时的快照。它的 props、事件处理函数和内部变量都是 **根据当前渲染时的 state** 被计算出来的。
 
@@ -188,13 +190,7 @@ step5.添加反向数据流
 
 
 
-## Queueing a Series of State Updates
-
-
-
-
-
-## Reacting to Input with State
+## 用 State 响应输入
 
 **React 会等到事件处理函数中的 \*所有\* 代码都运行完毕再处理你的 state 更新**
 
@@ -205,10 +201,6 @@ just like 餐厅里帮你点菜的服务员。服务员不会在你说第一道�
 - 设置 state 不会更改现有渲染中的变量，但会请求一次新的渲染。
 - React 会在事件处理函数执行完成之后处理 state 更新。这被称为批处理。
 - 要在一个事件中多次更新某些 state，你可以使用 `setNumber(n => n + 1)` 更新函数。
-
-
-
-## Reacting to Input with State
 
 在 **命令式编程** 中，以上的过程直接告诉你如何去实现交互。你必须去根据要发生的事情写一些明确的命令去操作 UI。对此有另一种理解方式，想象一下，当你坐在车里的某个人旁边，然后一步一步地告诉他该去哪。
 
@@ -226,7 +218,7 @@ just like 餐厅里帮你点菜的服务员。服务员不会在你说第一道�
 
 
 
-## Choosing the State Structure 
+## 选择state结构
 
 1. **将相关的状态分组**。如果你总是同时更新两个或更多的状态变量，考虑将它们合并成一个状态变量。
 2. **避免状态的矛盾**。当状态的结构是几块状态可能相互矛盾和 "不一致 "的时候，你就为错误留下了空间。尽量避免这种情况。
@@ -236,7 +228,7 @@ just like 餐厅里帮你点菜的服务员。服务员不会在你说第一道�
 
 
 
-## Preserving and Resetting State
+## 对 state 进行保留和重置
 
 React 使用树形结构来对你创造的 UI 进行管理和建模。React 根据你的 JSX 生成 **UI 树**。React DOM 根据 UI 树去更新浏览器的 DOM 元素。（React Native 则将这些 UI 树转译成移动平台上特有的元素。）
 
@@ -247,7 +239,7 @@ React 使用树形结构来对你创造的 UI 进行管理和建模。React 根�
 - 你可以通过为一个子树指定一个不同的 key 来重置它的 state。
 - 不要嵌套组件的定义，否则你会意外地导致 state 被重置。
 
-## Extracting State Logic into a Reducer
+## 迁移状态逻辑至 Reducer 中
 
 **迁移状态逻辑至 Reducer 中**
 
@@ -383,3 +375,88 @@ Reducers 应该是纯净的，所以它们不应该去修改 state。而 Immer �
 - Reducers 必须是纯净的。
 - 每个 action 都描述了一个单一的用户交互。
 - 使用 Immer 来帮助你在 reducer 里直接修改状态。
+
+## 使用 Context 深层传递参数
+
+### 传递 props 带来的问题 
+
+传递 props是将数据通过 UI 树显式传递到使用它的组件的好方法。
+
+但是当你需要在组件树中深层传递参数以及需要在组件间复用相同的参数时，传递 props 就会变得很麻烦。最近的根节点父组件可能离需要数据的组件很远，**状态提升到太高的层**级会导致 **==“逐层传递 props” 的情况==**。
+
+### 创建context
+
+1. **创建**一个context
+2. 在需要数据的组件内**使用**context
+3. 在指定数据的组件中**提供**context
+
+![image-20230424095807771](./notes.assets/image-20230424095807771.png)
+
+![image-20230424095824844](./notes.assets/image-20230424095824844.png)
+
+
+
+在使用 context 之前，你可以考虑以下几种替代方案：
+
+1. **尝试 传递 props。** 
+2. **抽象组件并 将 JSX 作为 `children` 传递给它们。** 如果你通过很多层不使用该数据的中间组件（并且只会向下传递）来传递数据，这通常意味着你在此过程中忘记了抽象组件。
+
+### Context使用场景
+
+- 主题：Dark Mode
+- 当前账户 : 将 UI 的一部分包裹到具有不同账户数据的 provider 中会很方便
+- 路由
+- 状态管理
+
+### 摘要
+
+- Context 使组件向其下方的整个树提供信息。
+- 传递 Context 的方法:
+  1. 通过 `export const MyContext = createContext(defaultValue)` 创建并导出 context。
+  2. 在无论层级多深的任何子组件中，把 context 传递给 `useContext(MyContext)` Hook 来读取它。
+  3. 在父组件中把 children 包在 `<MyContext.Provider value={...}>` 中来提供 context。
+- Context 会穿过中间的任何组件。
+- Context 可以让你写出 “较为通用” 的组件。
+- 在使用 context 之前，先试试传递 props 或者将 JSX 作为 `children` 传递。
+
+
+
+
+
+## Hooks
+
+自变量与因变量
+
+useState定义自变量
+
+useMemo useCallback 定义无副作用的因变量
+
+useEffect定义有副作用的因变量
+
+useReducer 为了方便操作更多的自变量
+
+useContext 为了跨组件层级操作自变量
+
+useRef 让组件层级更灵活  能控制中间步骤
+
+
+
+
+
+两者等价
+
+```
+// This:
+React.useCallback(function helloWorld(){}, []);
+
+// ...Is functionally equivalent to this:
+React.useMemo(() => function helloWorld(){}, []);
+```
+
+
+
+1. useMemo 存memoized 数据， useCallback 存memoized function definition. 
+2. 这两个hooks 都需要在末尾添加dependencies, react用以判断存的数据/function def 是否需要重新计算/定义
+3. useMemo 甚至可以替代useCallback,  useMemo(() => fn, [deps]) 等价于 useCallback(fn, [deps])
+4.  PureFoo = react.memo(Foo) 包裹后导出得PureFoo是纯组件, 如果纯组件没有props输入，则父组件更新不会引起该纯子组件PureFoo更新，如果纯组件有props输入, 则props更新依然会更新PureFoo( totally make sense, 因为纯函数的输入变化必然引起输出变化), 如果对输入的props 在父组件包裹一层 useMemo, 则props的 deps 没有变化的情况下，该父组件其它state变化不会引起PureFoo的重新渲染
+5.  useMemo 和 useCallback 一定要关注Eslint的报错，如果deps 没有补全大概率会产生bug

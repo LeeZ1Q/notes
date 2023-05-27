@@ -19,10 +19,10 @@ user = {
 };
 ```
 
-​            如果在 setTimeout 触发之前（有一秒的延迟！）user 的值改变了怎那么，突然间，它将调用错误的对象！
+            如果在 setTimeout 触发之前（有一秒的延迟！）user 的值改变了怎那么，突然间，它将调用错误的对象！
+    
+            解决方法：bind
 
-​            解决方法：bind
-​           
 
 ```js
 let user = {
@@ -42,7 +42,7 @@ user = {
 };
 ```
 
-​            在 (*) 行，我们取了方法 user.sayHi 并将其绑定到 user。sayHi 是一个“绑定后（bound）”的方法，它可以被单独调用，也可以被传递给 setTimeout —— 都没关系，函数上下文都会是正确的。
+            在 (*) 行，我们取了方法 user.sayHi 并将其绑定到 user。sayHi 是一个“绑定后（bound）”的方法，它可以被单独调用，也可以被传递给 setTimeout —— 都没关系，函数上下文都会是正确的。
 
 
 
@@ -154,19 +154,19 @@ getter和setter的主要作用是封装数据和保护数据的完整性，使�
 
 
 
-![image-20230322165643581](./notes.assets/image-20230322165643581.png)
+![image-20230322165643581](https://s2.loli.net/2023/05/27/StNUIRY4qdyPBhs.png)
 
 - `F.prototype` 属性（不要把它与 `[[Prototype]]` 弄混了）在 `new F` 被调用时为新对象的 `[[Prototype]]` 赋值。
 - `F.prototype` 的值要么是一个对象，要么就是 `null`：其他值都不起作用。
 - `"prototype"` 属性仅当设置在一个构造函数上，并通过 `new` 调用时，才具有这种特殊的影响。
 
-​		默认情况下，所有函数都有 `F.prototype = {constructor：F}`，所以我们可以通过访问它的 `"constructor"` 属性来获取一个对象的构造器。
+		默认情况下，所有函数都有 `F.prototype = {constructor：F}`，所以我们可以通过访问它的 `"constructor"` 属性来获取一个对象的构造器。
 
 
 
-​		Object.prototype 上方的链中没有更多的 [[Prototype]]
-
-​		![image-20230322173913721](./notes.assets/image-20230322173913721.png)
+		Object.prototype 上方的链中没有更多的 [[Prototype]]
+	
+		![image-20230322173913721](./notes.assets/image-20230322173913721.png)
 
 
 
@@ -181,7 +181,7 @@ getter和setter的主要作用是封装数据和保护数据的完整性，使�
 
 - [Object.create(proto, [descriptors\])](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Object/create) —— 利用给定的 `proto` 作为 `[[Prototype]]` 和可选的属性描述来创建一个空对象。
 
-​	例如：
+	例如：
 
 ```javascript
 let animal = {
@@ -201,6 +201,3 @@ Object.setPrototypeOf(rabbit, {}); // 将 rabbit 的原型修改为 {}
 `__proto__` 是一种访问 `[[Prototype]]` 的方式，而不是 `[[prototype]]` 本身
 
 `__proto__` 属性很特殊：它必须是一个对象或者 `null`。字符串不能成为原型。这就是为什么将字符串赋值给 `__proto__` 会被忽略
-
-
-

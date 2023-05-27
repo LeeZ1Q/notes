@@ -1,3 +1,11 @@
+\---
+
+title: Build your own react-notes
+
+date: 2023-04-24
+
+\---
+
 # Build your own react
 
 ## 步骤
@@ -64,7 +72,7 @@ const element = {
 
 FiberNode Tree的数据结构如图所示：
 
-![img](./notes.assets/1f11ebef8a4f497fa14fa24f8d5a4134tplv-k3u1fbpfcp-zoom-in-crop-mark1512000.awebp)
+![img](https://s2.loli.net/2023/05/27/AGBMIDQtLow2Fyi.webp)
 
 FiberNode 上有很多属性，包括和自身相关的属性 ref，节点之间的关系 return、silbing还有工作单元上的属性，比如 pendingProps等等
 
@@ -144,7 +152,9 @@ root.render(<App />);
 1. `fiberRootNode`：整个 Fiber树 的根结点，此节点的current属性指向的就是`current Fiber树`，对应的还有`workInprogress Fiber树`。
 2. `hostRootFiber`：挂载 React 应用的 dom 对应的`fiberNode`。
 
-![img](./notes.assets/51bf62209e424c2596d9c0d2a8072e9ftplv-k3u1fbpfcp-zoom-in-crop-mark1512000.awebp) 有一点需要说明的是，span下面的`TextNode`没有对应的`fiberNode` ，**这是 React 的一条优化路径，只有唯一文本节点的**`fiberNode`**就不会再生成子**`fiberNode`**了。**
+![img](https://s2.loli.net/2023/05/27/pTD7hItMGEu2Y81.webp)
+
+有一点需要说明的是，span下面的`TextNode`没有对应的`fiberNode` ，**这是 React 的一条优化路径，只有唯一文本节点的**`fiberNode`**就不会再生成子**`fiberNode`**了。**
 
 ❓：我曾有一个疑问，在上述这段JSX结构中，Header 组件下还有img和span节点，函数内部又有header节点，那么 Header 的`fiberNode.child`指向的是img的`fiberNode`呢还是内部的header的呢？
 
@@ -162,7 +172,7 @@ root.render(<App />);
 
 工作完成后根节点的`current`属性就会指向`workInProgress Fiber树`，`workInProgress Fiber树`和`current Fiber树`位置就互换了，这种技术也被称为双缓存，简而言之就是后台工作，完成以后前台后台位置互换。
 
-![img](./notes.assets/fca75d6f0ad04478bc157f874eab5b5ftplv-k3u1fbpfcp-zoom-in-crop-mark1512000.awebp)
+![img](https://s2.loli.net/2023/05/27/VFnEHPqMCymd2TB.webp)
 
 
 
@@ -182,7 +192,7 @@ React Fiber 实现这种工作进度保存的原理是通过**==将任务拆分�
 
 
 
-![React Fiber relationship](./notes.assets/5f6b3409f5628c49d6136dee_React Fiber relationship.jpeg)
+![React Fiber relationship](https://s2.loli.net/2023/05/27/zxW68vIt3FeZyig.jpg)
 
 ## step5.分离Render和Commit阶段
 

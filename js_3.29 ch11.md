@@ -73,7 +73,7 @@ loadScript('/my/script.js', function(error, script) {
 
 对于一个接一个的多个异步行为，代码将会变成这样：
 
-![image-20230330111002799](./notes.assets/image-20230330111002799.png)
+![image-20230330111002799](https://s2.loli.net/2023/05/27/QrUN5Ky6cpuHVfd.png)
 
 嵌套调用的“金字塔”随着每个异步行为会向右增长。很快它就失控了
 
@@ -98,7 +98,7 @@ let promise = new Promise(function(resolve, reject) {
 
 executor 会自动运行并尝试执行一项工作。尝试结束后，如果成功则调用 `resolve`，如果出现 error 则调用 `reject`。
 
-![image-20230330112052047](./notes.assets/image-20230330112052047.png)
+![image-20230330112052047](https://s2.loli.net/2023/05/27/fIhJeEvguw1kUVc.png)
 
 1. executor 被自动且立即调用（通过 `new Promise`）。
 
@@ -266,7 +266,7 @@ new Promise(function(resolve, reject) {
 
 随着 result 在处理程序链中传递，我们可以看到一系列的 `alert` 调用：`1` → `2` → `4`。
 
-![image-20230330154755689](./notes.assets/image-20230330154755689.png)
+![image-20230330154755689](https://s2.loli.net/2023/05/27/VA4YKT23uRUgOwm.png)
 
 这样之所以是可行的，是因为每个对 `.then` 的调用都会**返回了一个新的 promise**，因此我们可以在其之上调用下一个 `.then`。
 
@@ -297,7 +297,7 @@ promise.then(function(result) {
 });
 ```
 
-![image-20230330155049843](./notes.assets/image-20230330155049843.png)
+![image-20230330155049843](https://s2.loli.net/2023/05/27/8qmPaCOJoFptBnf.png)
 
 ### 返回promise
 
@@ -415,7 +415,7 @@ loadJson('/article/promise-chaining/user.json')
 
 如果 `.then`（或 `catch/finally` 都可以）处理程序返回一个 promise，那么链的其余部分将会等待，直到它状态变为 settled。当它被 settled 后，其 result（或 error）将被进一步传递下去。
 
-![image-20230330163159742](./notes.assets/image-20230330163159742.png)
+![image-20230330163159742](https://s2.loli.net/2023/05/27/EIFVzhAblC36wax.png)
 
 ## Promise错误处理
 
@@ -725,7 +725,7 @@ promise 的处理程序 `.then`、`.catch` 和 `.finally` 都是异步的。
 
 或者，简单地说，当一个 promise 准备就绪时，它的 `.then/catch/finally` 处理程序就会被放入队列中：但是它们不会立即被执行。当 JavaScript 引擎执行完当前的代码，它会从队列中获取任务并执行它。
 
-![image-20230401160810378](./notes.assets/image-20230401160810378.png)
+![image-20230401160810378](https://s2.loli.net/2023/05/27/WmOjoQ1Pc7ZFhNY.png)
 
 promise 的处理程序总是会经过这个内部队列。
 
@@ -764,7 +764,7 @@ window.addEventListener('unhandledrejection', event => alert(event.reason));
 
 **每个宏任务之后，引擎会立即执行微任务队列中的所有任务，然后再执行其他的宏任务，或渲染，或进行其他任何操作。**
 
-![image-20230401164431028](./notes.assets/image-20230401164431028.png)
+![image-20230401164431028](https://s2.loli.net/2023/05/27/pirV5tdzUhaoCBS.png)
 
 ```javascript
 setTimeout(() => alert("timeout"));  //alert("timeout") 添加到宏任务队列

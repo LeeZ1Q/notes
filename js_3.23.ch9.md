@@ -6,11 +6,7 @@ constructor 里写私有属性
 
 能被继承的方法写外面
 
-
-
 new会自动调用constructor 
-
-
 
 对象里用逗号，类的方法之间不用
 
@@ -94,7 +90,7 @@ let animal = new Animal("My animal");
 
 这是我们对对象 `animal` 和 class `Animal` 的图形化表示：
 
-![image-20230323111219234](./notes.assets/image-20230323111219234.png)
+![image-20230323111219234](https://s2.loli.net/2023/05/27/odAbDpIwkc6sghx.png)
 
 
 
@@ -113,7 +109,7 @@ rabbit.run(5); // White Rabbit runs with speed 5.
 rabbit.hide(); // White Rabbit hides
 ```
 
-![image-20230323112359340](./notes.assets/image-20230323112359340.png)
+![image-20230323112359340](https://s2.loli.net/2023/05/27/8IgjLUGqVDxSEnM.png)
 
 
 
@@ -198,21 +194,21 @@ Object.asign 是静态方法
 
 `extends` 让 `Rabbit` 的 `[[Prototype]]` 指向了 `Animal`。
 
-![image-20230323150534890](./notes.assets/image-20230323150534890.png)
+![image-20230323150534890](https://s2.loli.net/2023/05/27/qvSbhNRJlMaVti7.png)
 
 所以，`Rabbit extends Animal` 创建了两个 `[[Prototype]]` 引用：
 
 1. `Rabbit` 函数原型继承自 `Animal` 函数。
 
-   ​	`Rabbit.__proto__ === Animal`
-
-   ​	**为了获取静态方法**
+   	`Rabbit.__proto__ === Animal`
+		
+   	**为了获取静态方法**
 
 2. `Rabbit.prototype` 原型继承自 `Animal.prototype`。
 
-​	`Rabbit.prototype.__proto__ === Animal.prototype`		
+	`Rabbit.prototype.__proto__ === Animal.prototype`		
 
-​		**为了获取实例方法**
+		**为了获取实例方法**
 
 
 
@@ -308,4 +304,3 @@ mixin是一个包含可被其他类使用而无需继承的方法的类。
 换句话说，*mixin* 提供了实现特定行为的方法，但是我们不单独使用它，而是使用它来将这些行为添加到其他类中   ——————  **解决多继承**（JavaScript不支持多继承的主要原因是以简单性和灵活性为代价的）
 
 拷贝方法 Object.assign(User.prototype, sayHiMixin)
-

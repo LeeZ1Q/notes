@@ -48,7 +48,7 @@ jsx和js关系更近，遵循驼峰命名 ， class → className ，onclick →
 
 react用虚拟DOM储存DOM元素
 
-![image-20230407100408409](./notes.assets/image-20230407100408409.png)
+![image-20230407100408409](https://s2.loli.net/2023/05/27/KHVJtbEdmAQDzSL.png)
 
 在大括号里写js
 
@@ -71,9 +71,9 @@ function App() {
 }
 ```
 
-​    `{list.map(item => <h1>{item.title}</h1>)}`
+    `{list.map(item => <h1>{item.title}</h1>)}`
 
-![image-20230407111215806](./notes.assets/image-20230407111215806.png)
+![image-20230407111215806](https://s2.loli.net/2023/05/27/TYZDVSXjAeR2nHI.png)
 
 
 
@@ -83,7 +83,7 @@ function App() {
 
 每当React重新渲染list，用来检查这个item是否改变
 
-![image-20230407111835474](./notes.assets/image-20230407111835474.png)
+![image-20230407111835474](https://s2.loli.net/2023/05/27/pTjJkfzDB9ZlywP.png)
 
 [渲染列表 – React (reactjs.org)](https://zh-hans.reactjs.org/learn/rendering-lists#keeping-list-items-in-order-with-key)
 
@@ -119,7 +119,7 @@ function List(){
 
 App,List,Search 
 
-![image-20230407144732783](./notes.assets/image-20230407144732783.png)
+![image-20230407144732783](https://s2.loli.net/2023/05/27/t7qlHU2fru9Am6F.png)
 
 组件树
 
@@ -252,7 +252,7 @@ const Item = ({title, author, url}) => {
 
 **可以被修改**  响应式 
 
-![./image-20230407213326497](./notes.assets/image-20230407213326497.png)
+![./image-20230407213326497](https://s2.loli.net/2023/05/27/bJgHcKUdNMXkALs.png)
 
 修改数据，自动重新渲染
 
@@ -282,11 +282,11 @@ const Search = () => {
 
 **React只重新渲染状态改变了的状态值的组件**
 
-![./image-20230407214241994](./notes.assets/image-20230407214241994.png)
+![./image-20230407214241994](https://s2.loli.net/2023/05/27/WKf4ewrv7IgFUiY.png)
 
 初次渲染 → 交互 → 状态值改变 → 重新渲染
 
-![./image-20230407215234747](notes.assets/image-20230407215234747.png)
+![./image-20230407215234747](https://s2.loli.net/2023/05/27/QjnAVhoTs8MfUNq.png)
 
 ## Callback Handlers 
 
@@ -294,7 +294,7 @@ const Search = () => {
 
 目前只能从上往下传值
 
-![image-20230407215813760](./notes.assets/image-20230407215813760.png)
+![image-20230407215813760](https://s2.loli.net/2023/05/27/jQkqptHvr6O5bgz.png)
 
 事件处理程序在父组件`App`里声明（A），传到子组件B `Seacrh`，在那里作为回调处理程序`handleChange`被执行（C），并回调到父组件App中被引入的地方D
 
@@ -354,7 +354,7 @@ callback handler 不好用，父组件甚至没法调用，filter更不可行了
 
 **直接在父组件里定义**！（从子组件提升到父组件）
 
-![image-20230407223301270](./notes.assets/image-20230407223301270.png)
+![image-20230407223301270](https://s2.loli.net/2023/05/27/D3uxmZdNYjoMHef.png)
 
 **在父组件定义状态！**就只从上往下传就行了！
 
@@ -397,8 +397,6 @@ const Search = (props) => (
     </div>
   );
 ```
-
-
 
 实际开发里面数组、对象用的更多
 
@@ -453,13 +451,13 @@ input不知道React的状态这玩意儿，那就把状态值绑到input的value
 
 那现在inpt就不自由了，是 **受控** 的 ，用state来约束inpt
 
-![image-20230408112413194](./notes.assets/image-20230408112413194.png)
+![image-20230408112413194](https://s2.loli.net/2023/05/27/CmrGWbfgAz1vFdQ.png)
 
 ## Props Handling
 
 
 
-![image-20230408112732517](./notes.assets/image-20230408112732517.png)
+![image-20230408112732517](https://s2.loli.net/2023/05/27/V1LqiU7XRsDrPca.png)
 
 **解构赋值！** **Object Destructuring**
 

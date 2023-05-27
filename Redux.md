@@ -1,3 +1,10 @@
+---
+title: Redux official docs-notes
+
+date: 2023-04-017
+
+---
+
 # Redux 深入浅出
 
 ## 基础概念
@@ -58,7 +65,7 @@ store 是一个 JavaScript 对象，具有一些特殊的功能和能力，使�
 - store 通过执行 reducer 方法计算出一个新的 state
 - UI 读取最新的 state 来展示最新的值
 
-![Redux data flow diagram](./notes.assets/ReduxDataFlowDiagram-49fa8c3968371d9ef6f2a1486bd40a26.gif)
+![Redux data flow diagram](https://s2.loli.net/2023/05/27/bWZidqsx8He2PVF.gif)
 
 ### 总结
 
@@ -74,7 +81,7 @@ store 是一个 JavaScript 对象，具有一些特殊的功能和能力，使�
 
 ### State管理
 
-![One-way data flow](./notes.assets/one-way-data-flow-04fe46332c1ccb3497ecb04b94e55b97.png)
+![One-way data flow](https://s2.loli.net/2023/05/27/hGx82yXuPKLVtE1.png)
 
 单向数据流：
 
@@ -327,7 +334,7 @@ react和redux建立起关联
 
 这里是**action函数**！
 
-![Redux 异步数据流程图](./notes.assets/ReduxAsyncDataFlowDiagram-d97ff38a0f4da0f327163170ccc13e80.gif)
+![Redux 异步数据流程图](https://s2.loli.net/2023/05/27/C93HOFeWRAb5nQt.gif)
 
 - Redux middleware 旨在支持编写具有副作用的逻辑
   - “副作用”是指更改函数外部 state 或行为的代码，例如 AJAX 调用、修改函数参数或生成随机值

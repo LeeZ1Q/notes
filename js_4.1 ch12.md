@@ -119,7 +119,7 @@ alert( generator.next(9).done ); // true
 
 执行图：
 
-![image-20230401215430401](./notes.assets/image-20230401215430401.png)
+![image-20230401215430401](https://s2.loli.net/2023/05/27/gkMWZ3rXbBv2OiV.png)
 
 这个过程就像“乒乓球”游戏。每个 `next(value)`（除了第一个）传递一个值到 generator 中，该值变成了当前 `yield` 的结果，然后获取下一个 `yield` 的结果
 

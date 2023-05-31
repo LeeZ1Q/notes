@@ -144,7 +144,6 @@ function Header({ children }) {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
-复制代码
 ```
 
 这段JSX代码运行后会生成一个如下所示的 Fiber树，其中有两个特殊的节点：

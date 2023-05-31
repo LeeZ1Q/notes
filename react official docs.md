@@ -452,3 +452,5 @@ React.useMemo(() => function helloWorld(){}, []);
 3. useMemo 甚至可以替代useCallback,  useMemo(() => fn, [deps]) 等价于 useCallback(fn, [deps])
 4.  PureFoo = react.memo(Foo) 包裹后导出得PureFoo是纯组件, 如果纯组件没有props输入，则父组件更新不会引起该纯子组件PureFoo更新，如果纯组件有props输入, 则props更新依然会更新PureFoo( totally make sense, 因为纯函数的输入变化必然引起输出变化), 如果对输入的props 在父组件包裹一层 useMemo, 则props的 deps 没有变化的情况下，该父组件其它state变化不会引起PureFoo的重新渲染
 5.  useMemo 和 useCallback 一定要关注Eslint的报错，如果deps 没有补全大概率会产生bug
+
+## Cutom Hooks

@@ -455,8 +455,6 @@ input不知道React的状态这玩意儿，那就把状态值绑到input的value
 
 ## Props Handling
 
-
-
 ![image-20230408112732517](https://s2.loli.net/2023/05/27/V1LqiU7XRsDrPca.png)
 
 **解构赋值！** **Object Destructuring**

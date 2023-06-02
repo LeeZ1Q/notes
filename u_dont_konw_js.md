@@ -410,3 +410,140 @@ boxing ：把原始值变为引用类型  unboxing：把引用类型变为 原�
 in 检测整个原型链
 
 hasOwnProperty(..)   ==> Object.hasOwn(..) 仅查询目标对象
+
+
+
+#### ch2 How Objects Work
+
+使用 `Object.getOwnPropertyDescriptor(..)` （ES5） 检索任何现有属性的属性描述符
+
+
+
+enumerable 是否出现在对象属性的各种枚举中，例如 `Object.keys(..)` 、 `Object.entries(..)` 、 `for..in` 循环，以及随 `...` 对象分布和 `Object.assign(..)` 发生的复制
+
+writable   是否允许 `value` 赋值（通过 `=` ）
+
+configurable 是否可以重新定义/覆盖属性的描述符
+
+
+
+永远不要故意在数组中创建空插槽
+
+不要在函数对象上分配属性
+
+
+
+##### **[[Prototype]] Chain**
+
+官方的JS规范表示法是 `[[Prototype]]`   `prototype` 是公共属性
+
+`[[Prototype]]` 是一个内部链接，一个对象在创建时默认获得它指向另一个对象
+
+默认情况下，所有对象都链接到名为 `Object.prototype` 的内置对象 `[[Prototype]]`
+
+`Object.prototype` 包括：
+
+- `constructor`
+- `__proto__`
+- `toString()`
+- `valueOf()`
+- `hasOwnProperty(..)`
+- `isPrototypeOf(..)`
+
+
+
+```
+myObj = Object.create(differentObj);
+```
+
+`Object.create(..)` 方法将其第一个参数作为要为新创建对象的 `[[Prototype]]` 设置的值
+
+
+
+[[Prototype]]  vs  prototype
+
+真正的原型            一个属性
+
+函数的`prototype` 属性不定义函数本身经历的任何链接
+
+ `prototype` 属性是指在使用 `new` 关键字调用该函数时创建的任何其他对象应链接到的对象
+
+
+
+`[[Prototype]]` 是对象的一个内部属性，它指向该对象的原型对象。当我们访问一个对象的属性时，如果该对象本身没有该属性，JavaScript 会沿着 `[[Prototype]]` 链向上查找，直到找到该属性或者到达最顶层的原型对象为止。
+
+`prototype` 是**函数对象**的一个属性，它指向该函数的原型对象。原型对象是一个普通的对象，它包含了该函数的实例对象共享的属性和方法。当我们使用关键字 `new` 来创建一个函数的实例对象时，实际上是创建了一个新的对象，并将该对象的 `[[Prototype]]` 属性指向了该函数的 `prototype` 对象。
+
+
+
+函数对象的 `[[Prototype]]` 指向的是 `Function.prototype` 对象，而 `Function.prototype` 对象的 `[[Prototype]]` 指向的是 `Object.prototype` 对象
+
+
+
+
+
+#### ~~ch3 Classy Objects~~
+
+~~ES6 class语法糖~~
+
+~~永远不要附加 `=>` 箭头函数作为实例属性来代替动态原型类方法~~
+
+~~super 调用父类的同名方法~~
+
+~~super放在前面~~
+
+~~使用 `instanceof` 运算符 自检某个对象实例，以查看它是否是特定类的实例。~~
+
+~~私有不会被继承~~
+
+~~js里面好像不怎么面向对象，面向过程多点吧，看的痛苦，晕的厉害~~
+
+~~React也是函数式编程~~
+
+
+
+#### CH4  This Works
+
+**this的值不是写的时候决定的，而是运行的时候确定的**
+
+关键在于：**函数是怎么被调用的**
+
+
+
+词法作用域是静态的/固定的 不会被runtime影响
+
+this也是一种作用域：动态的上下文
+
+
+
+箭头函数没有自己的this，会找离他最近的作用域的this
+
+
+
+ `this` 的指向会失去原本的对象的解决方法：
+
+1. 使用箭头函数
+
+在箭头函数中，`this` 的指向是固定的，指向箭头函数所在的上下文。因此，在箭头函数中使用 `this` 可以避免 `this` 的指向失去原本的对象。例如：
+
+```
+TXT复制var obj = { name: "Tom" }; setTimeout(() => {  console.log(this); // 输出 obj 对象 }, 1000); 
+```
+
+1. 使用变量保存原本的 `this` 值
+
+在函数中，将 `this` 的值保存到变量中，可以避免 `this` 的指向失去原本的对象。例如：
+
+```
+TXT复制var obj = { name: "Tom" }; function func() {  var that = this;   setTimeout(function() {    console.log(that); // 输出 obj 对象  }, 1000); } func.call(obj); 
+```
+
+1. 使用 call()、apply()、bind() 方法
+
+`call()`、`apply()`、`bind()` 方法都可以用来改变函数中 `this` 的指向。使用这些方法可以将函数中的 `this` 指向正确的对象。例如：
+
+```
+TXT复制var obj1 = { name: "Tom" }; var obj2 = { name: "Jerry" }; function func() {  console.log(this.name); } func.call(obj1); // 输出 Tom func.call(obj2); // 输出 Jerry var newFunc = func.bind(obj1); newFunc(); // 输出 Tom 
+```
+
+以上是几种常见情况下 `this` 的指向会失去原本的对象的解决方法。需要根据实际情况选择合适的方法来解决 `this` 的指向问题。
